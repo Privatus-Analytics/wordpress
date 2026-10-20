@@ -171,9 +171,9 @@ final class Privatus_Analytics_Settings {
 		printf(
 			'<p>%1$s <a href="%2$s" target="_blank" rel="noopener noreferrer">%3$s</a> | <a href="%4$s" target="_blank" rel="noopener noreferrer">%5$s</a></p>',
 			esc_html__( 'Once you save a site id, visitors\' browsers load a script from the Privatus Analytics service and send it anonymous page view data. Nothing is sent before that.', 'privatus-analytics' ),
-			esc_url( 'https://privatusanalytics.com/terms' ),
+			esc_url( 'https://privatusanalytics.com/legal/terms' ),
 			esc_html__( 'Terms of service', 'privatus-analytics' ),
-			esc_url( 'https://privatusanalytics.com/privacy' ),
+			esc_url( 'https://privatusanalytics.com/legal/privacy' ),
 			esc_html__( 'Privacy policy', 'privatus-analytics' )
 		);
 	}

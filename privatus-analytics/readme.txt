@@ -41,8 +41,8 @@ This plugin relies on the Privatus Analytics service, operated by Two Phase LLC 
 
 **The dashboard card** is a plain link. It makes no request from your server and embeds nothing. The link opens `https://privatusanalytics.com` or the https address you enter.
 
-* Terms of service: https://privatusanalytics.com/terms
-* Privacy policy: https://privatusanalytics.com/privacy
+* Terms of service: https://privatusanalytics.com/legal/terms
+* Privacy policy: https://privatusanalytics.com/legal/privacy
 
 == Installation ==
 
