@@ -1,6 +1,6 @@
 <?php
 /**
- * Prints the tracker snippet in wp_head.
+ * Enqueues the tracker script on front-end pages.
  *
  * @package PrivatusAnalytics
  */
@@ -21,10 +21,16 @@ final class Privatus_Analytics_Tracker {
 	const STUB = "window.privatus=window.privatus||{q:[]};['track','pageview','props','optOut','optIn','ready'].forEach(function(m){window.privatus[m]=window.privatus[m]||function(){window.privatus.q.push([m,Array.prototype.slice.call(arguments)])}});";
 
 	/**
+	 * Script handle of the tracker. WordPress prints it with the id privatus-analytics-js.
+	 */
+	const HANDLE = 'privatus-analytics';
+
+	/**
 	 * Hook into WordPress.
 	 */
 	public function register() {
-		add_action( 'wp_head', array( $this, 'print_snippet' ), 1 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 1 );
+		add_filter( 'wp_script_attributes', array( $this, 'filter_script_attributes' ) );
 	}
 
 	/**
@@ -123,7 +129,9 @@ final class Privatus_Analytics_Tracker {
 		);
 		foreach ( $pairs as $pair ) {
 			$base = wp_parse_url( wc_get_endpoint_url( $pair[1], '', $pair[0] ), PHP_URL_PATH );
-			if ( $base ) {
+			// With plain permalinks the order id is in the query string, which pa.js already removes.
+			// The path is then "/", and masking it would turn every page into the home page.
+			if ( $base && '/' !== trailingslashit( $base ) ) {
 				$base    = trailingslashit( $base );
 				$masks[] = $base . '*->' . $base;
 			}
@@ -132,13 +140,41 @@ final class Privatus_Analytics_Tracker {
 	}
 
 	/**
-	 * Print the queue stub and the script tag.
+	 * Enqueue the tracker script with the queue stub in front of it.
 	 */
-	public function print_snippet() {
+	public function enqueue() {
 		if ( ! self::should_track() ) {
 			return;
 		}
-		wp_print_inline_script_tag( self::STUB, array( 'id' => 'privatus-analytics-stub' ) );
-		wp_print_script_tag( self::script_attributes() );
+		$attrs = self::script_attributes();
+		if ( empty( $attrs['src'] ) ) {
+			return;
+		}
+		wp_enqueue_script(
+			self::HANDLE,
+			(string) $attrs['src'],
+			array(),
+			null, // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- the remote service versions its own script; a ver query string would split its cache.
+			array(
+				'in_footer' => false,
+				'strategy'  => 'defer',
+			)
+		);
+		wp_add_inline_script( self::HANDLE, self::STUB, 'before' );
+	}
+
+	/**
+	 * Add the data-* settings to the tracker script tag.
+	 *
+	 * @param array $attributes Script tag attributes built by WordPress.
+	 * @return array
+	 */
+	public function filter_script_attributes( $attributes ) {
+		if ( ! is_array( $attributes ) || ! isset( $attributes['id'] ) || self::HANDLE . '-js' !== $attributes['id'] ) {
+			return $attributes;
+		}
+		$extra = self::script_attributes();
+		unset( $extra['src'], $extra['id'] );
+		return array_merge( $attributes, $extra );
 	}
 }

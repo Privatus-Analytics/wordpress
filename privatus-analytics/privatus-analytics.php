@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name:       Privatus Analytics
- * Plugin URI:        https://privatusanalytics.com/docs/wordpress
+ * Plugin URI:        https://privatusanalytics.com/docs/install/wordpress
  * Description:       Cookieless, privacy-first analytics for WordPress and WooCommerce. No cookies and no personal data.
- * Version:           1.0.1
- * Requires at least: 6.0
+ * Version:           1.0.2
+ * Requires at least: 6.4
  * Requires PHP:      7.4
  * Author:            Privatus Analytics
  * Author URI:        https://privatusanalytics.com
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PRIVATUS_ANALYTICS_VERSION', '1.0.1' );
+define( 'PRIVATUS_ANALYTICS_VERSION', '1.0.2' );
 define( 'PRIVATUS_ANALYTICS_FILE', __FILE__ );
 define( 'PRIVATUS_ANALYTICS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'PRIVATUS_ANALYTICS_URL', plugin_dir_url( __FILE__ ) );

@@ -1,6 +1,6 @@
 # Privatus Analytics for WordPress
 
-WordPress plugin (PHP ≥ 7.4, WordPress ≥ 6.0) that adds the cookieless Privatus Analytics tracker to your site
+WordPress plugin (PHP ≥ 7.4, WordPress ≥ 6.4) that adds the cookieless Privatus Analytics tracker to your site
 and tracks WooCommerce purchases. The plugin lives in [`privatus-analytics/`](privatus-analytics/).
 
 ## Install
@@ -69,5 +69,5 @@ See `privatus-analytics/LICENSE` and `privatus-analytics/LICENSE-GPL-2.0.txt`.
 docker run --rm -v "$PWD":/w -w /w php:8.3-cli sh -c 'for f in $(find . -name "*.php"); do php -l $f || exit 1; done'
 
 # WordPress Coding Standards + PHP 7.4 compatibility (tools installed inside the container only)
-docker run --rm -v "$PWD/privatus-analytics":/w:ro composer:2 sh -c 'cd /tmp && composer config -g allow-plugins.dealerdirect/phpcodesniffer-composer-installer true && composer require -q --dev wp-coding-standards/wpcs:^3 phpcompatibility/phpcompatibility-wp:"*" && vendor/bin/phpcs --standard=WordPress,PHPCompatibilityWP --runtime-set testVersion 7.4- --runtime-set minimum_wp_version 6.0 --runtime-set text_domain privatus-analytics --extensions=php /w'
+docker run --rm -v "$PWD/privatus-analytics":/w:ro composer:2 sh -c 'cd /tmp && composer config -g allow-plugins.dealerdirect/phpcodesniffer-composer-installer true && composer require -q --dev wp-coding-standards/wpcs:^3 phpcompatibility/phpcompatibility-wp:"*" && vendor/bin/phpcs --standard=WordPress,PHPCompatibilityWP --runtime-set testVersion 7.4- --runtime-set minimum_wp_version 6.4 --runtime-set text_domain privatus-analytics --extensions=php /w'
 ```

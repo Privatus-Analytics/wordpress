@@ -16,6 +16,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Privatus_Analytics_WooCommerce {
 
 	const META_KEY = '_privatus_tracked';
+	const HANDLE   = 'privatus-analytics-purchase';
+
+	/**
+	 * Purchase properties waiting to be printed in the footer.
+	 *
+	 * @var array<string, mixed>|null
+	 */
+	private $pending = null;
 
 	/**
 	 * Hook into WordPress.
@@ -42,10 +50,10 @@ final class Privatus_Analytics_WooCommerce {
 			return;
 		}
 
-		if ( $this->print_js_event( $order ) ) {
-			$order->update_meta_data( self::META_KEY, time() );
-			$order->save();
-		}
+		$this->pending = self::purchase_props( $order );
+		add_action( 'wp_footer', array( $this, 'enqueue_event' ), 1 );
+		$order->update_meta_data( self::META_KEY, time() );
+		$order->save();
 	}
 
 	/**
@@ -64,17 +72,21 @@ final class Privatus_Analytics_WooCommerce {
 	}
 
 	/**
-	 * Queue privatus.track('purchase', …). Respects the visitor opt-out and pa.js rules.
+	 * Queue privatus.track('purchase', …) in the footer. Respects the visitor opt-out and pa.js rules.
 	 *
-	 * @param WC_Order $order Order.
-	 * @return bool
+	 * Block themes run woocommerce_thankyou before the page head, so the script is added at wp_footer.
+	 * The event is an inline script attached to a script handle with no file, so WordPress prints it.
 	 */
-	private function print_js_event( $order ) {
-		$props = self::purchase_props( $order );
-		wp_print_inline_script_tag(
-			Privatus_Analytics_Tracker::STUB . 'window.privatus.track("purchase",' . wp_json_encode( $props ) . ');',
-			array( 'id' => 'privatus-analytics-purchase' )
+	public function enqueue_event() {
+		if ( null === $this->pending ) {
+			return;
+		}
+		wp_register_script( self::HANDLE, false, array(), PRIVATUS_ANALYTICS_VERSION, true );
+		wp_enqueue_script( self::HANDLE );
+		wp_add_inline_script(
+			self::HANDLE,
+			Privatus_Analytics_Tracker::STUB . 'window.privatus.track("purchase",' . wp_json_encode( $this->pending ) . ');'
 		);
-		return true;
+		$this->pending = null;
 	}
 }

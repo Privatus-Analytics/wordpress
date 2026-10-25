@@ -1,10 +1,10 @@
 === Privatus Analytics ===
 Contributors: privatusanalytics
 Tags: analytics, privacy, cookieless, gdpr, woocommerce
-Requires at least: 6.0
+Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,7 +33,7 @@ This plugin relies on the Privatus Analytics service, operated by Two Phase LLC 
 
 **What it is used for:** counting visits and conversions on your site and showing them in your Privatus Analytics dashboard.
 
-**What is loaded and sent:** after you save a site id, every front-end page loads the script `https://privatusstats.com/js/pa.js` in the visitor's browser. That script sends the following to `https://privatusstats.com/api/event`: the page address (query parameters are removed except campaign parameters and any you allow), the referrer, the browser language, the screen width, the time zone name, and the names and properties of events (for WooCommerce, the order total, currency, item count and a coupon flag). Your site id is sent with each request. The visitor's IP address and browser details are used in memory only, together with a random value that changes every day, to count unique visits and spot bots. They are never stored. The visitor's country comes from the country code that Cloudflare adds to each request. Nothing is sent when the visitor has opted out, when the visitor is a logged-in user with an excluded role, or in the admin area.
+**What is loaded and sent:** after you save a site id, every front-end page loads the script `https://privatusstats.com/js/pa.js` in the visitor's browser. That script sends the following to the endpoint `https://privatusstats.com/api/event` (it only accepts data sent by the script, so it shows an error if you open it in a browser): the page address (query parameters are removed except campaign parameters and any you allow), the referrer, the browser language, the screen width, the time zone name, and the names and properties of events (for WooCommerce, the order total, currency, item count and a coupon flag). Your site id is sent with each request. The visitor's IP address and browser details are used in memory only, together with a random value that changes every day, to count unique visits and spot bots. They are never stored. The visitor's country comes from the country code that Cloudflare adds to each request. Nothing is sent when the visitor has opted out, when the visitor is a logged-in user with an excluded role, or in the admin area.
 
 **When:** only after you enter a site id in Settings, Privatus Analytics. If you change the script host setting, the same data goes to the host you enter.
 
@@ -94,6 +94,11 @@ Its settings and the per-order purchase marker. Your data in Privatus Analytics 
 
 == Changelog ==
 
+= 1.0.2 =
+* The plugin home page link now goes to the WordPress install guide.
+* The tracking script and the WooCommerce purchase event are now loaded the standard WordPress way, with wp_enqueue_script.
+* Needs WordPress 6.4 or newer.
+
 = 1.0.1 =
 * The suggested privacy policy text is easier to read and links to the Privatus Analytics privacy page.
 * The suggested text now says correctly where the country comes from and what the opt-out button stores.
@@ -102,6 +107,9 @@ Its settings and the per-order purchase marker. Your data in Privatus Analytics 
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.2 =
+The tracking script now loads the standard WordPress way. Needs WordPress 6.4 or newer.
 
 = 1.0.1 =
 Clearer suggested privacy policy text. Check Settings, Privacy, Policy guide and update your policy.
