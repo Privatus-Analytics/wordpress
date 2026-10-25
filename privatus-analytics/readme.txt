@@ -4,7 +4,7 @@ Tags: analytics, privacy, cookieless, gdpr, woocommerce
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,7 +33,7 @@ This plugin relies on the Privatus Analytics service, operated by Two Phase LLC 
 
 **What it is used for:** counting visits and conversions on your site and showing them in your Privatus Analytics dashboard.
 
-**What is loaded and sent:** after you save a site id, every front-end page loads the script `https://privatusstats.com/js/pa.js` in the visitor's browser. That script sends the following to `https://privatusstats.com/api/event`: the page address (query parameters are removed except campaign parameters and any you allow), the referrer, the browser language, the screen width, the time zone name, and the names and properties of events (for WooCommerce, the order total, currency, item count and a coupon flag). Your site id is sent with each request. The visitor's IP address is read to work out an approximate country and to count unique visits, and it is not stored. Nothing is sent when the visitor has opted out, when the visitor is a logged-in user with an excluded role, or in the admin area.
+**What is loaded and sent:** after you save a site id, every front-end page loads the script `https://privatusstats.com/js/pa.js` in the visitor's browser. That script sends the following to `https://privatusstats.com/api/event`: the page address (query parameters are removed except campaign parameters and any you allow), the referrer, the browser language, the screen width, the time zone name, and the names and properties of events (for WooCommerce, the order total, currency, item count and a coupon flag). Your site id is sent with each request. The visitor's IP address and browser details are used in memory only, together with a random value that changes every day, to count unique visits and spot bots. They are never stored. The visitor's country comes from the country code that Cloudflare adds to each request. Nothing is sent when the visitor has opted out, when the visitor is a logged-in user with an excluded role, or in the admin area.
 
 **When:** only after you enter a site id in Settings, Privatus Analytics. If you change the script host setting, the same data goes to the host you enter.
 
@@ -94,10 +94,17 @@ Its settings and the per-order purchase marker. Your data in Privatus Analytics 
 
 == Changelog ==
 
+= 1.0.1 =
+* The suggested privacy policy text is easier to read and links to the Privatus Analytics privacy page.
+* The suggested text now says correctly where the country comes from and what the opt-out button stores.
+
 = 1.0.0 =
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Clearer suggested privacy policy text. Check Settings, Privacy, Policy guide and update your policy.
 
 = 1.0.0 =
 Initial release.
