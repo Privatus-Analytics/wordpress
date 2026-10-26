@@ -8,7 +8,7 @@ Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Simple, private analytics. No cookies, no bots in your numbers, and a dashboard you understand in seconds.
+Simple, private analytics. No cookies, bots kept out of your numbers, and a dashboard you understand in seconds.
 
 == Description ==
 
