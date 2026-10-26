@@ -1,7 +1,37 @@
 # Privatus Analytics for WordPress
 
-WordPress plugin (PHP ≥ 7.4, WordPress ≥ 6.4) that adds the cookieless Privatus Analytics tracker to your site
-and tracks WooCommerce purchases. The plugin lives in [`privatus-analytics/`](privatus-analytics/).
+**Simple, private analytics for WordPress and WooCommerce. No cookies, honest numbers, and a dashboard you
+understand in seconds.** [Get it on WordPress.org](https://wordpress.org/plugins/privatus-analytics/).
+
+## Why Privatus Analytics
+
+**Google Analytics is slow, confusing and hungry for data.** It sends what your visitors do to Google. In many
+countries it means showing a cookie pop-up (the box that asks visitors to accept cookies), and many people click
+"reject", so you never see them. Bots pad the numbers that are left.
+
+**Privatus Analytics fixes that.** It counts visits to your WordPress site without cookies and never stores IP
+addresses. Bots are filtered out before they are counted. Your data is never sold or shared.
+
+What you get:
+
+- **A dashboard you understand in seconds.** Visitors, top pages and where people came from, all on one screen.
+- **No cookie pop-up needed for our analytics.** We set no cookies and store no personal data. Laws differ by
+  country, so check your own legal advice.
+- **Honest numbers.** Known bots and fake traffic are left out on every plan.
+- **A fast site.** The tracking script is about 3 KB, tiny next to most tracking tags.
+- **Sales you can see.** WooCommerce orders show up as revenue, with no names, emails or order numbers sent.
+- **Data you own.** We never sell it or show you ads, and you can pull it out any time through the API.
+
+**Start free.** The Free plan has 10,000 events a month and 3 sites, with no card. Every new account also gets
+14 days of Pro free, with no card. [Create your account](https://privatusanalytics.com).
+
+## What this plugin does
+
+- One-field setup: paste your site id and the tracker is added to every front-end page.
+- Leaves out logged-in users by role (administrators by default).
+- Tracks WooCommerce purchases from the visitor's browser, with no personal data.
+- An opt-out shortcode, suggested privacy policy text and a dashboard card.
+- Needs PHP 7.4 or newer and WordPress 6.4 or newer. The plugin lives in [`privatus-analytics/`](privatus-analytics/).
 
 ## Install
 
@@ -33,7 +63,7 @@ so all values are escaped by core. Filters: `privatus_analytics_should_track`, `
 
 ### WooCommerce
 
-On `woocommerce_thankyou` a single `purchase` event is sent per order (guarded by order meta `_privatus_tracked`;
+On `woocommerce_thankyou` a single `purchase` event is sent per order (guarded by order meta `_privatus_tracked`,
 HPOS compatible) with `revenue` (order total), `currency`, `items` (item count) and `coupon_used` (boolean).
 **No order id, email, name or address is ever sent.** The order-received, order-pay and view-order URLs are
 masked automatically (`/checkout/order-received/*->/checkout/order-received/`) so order ids never appear in page URLs.
@@ -51,9 +81,15 @@ It calls `privatus.optOut()` / `optIn()` when the tracker is loaded and otherwis
 
 Suggested text is registered via `wp_add_privacy_policy_content` (Settings → Privacy → Policy guide).
 
+### Review request
+
+After the plugin has been active for 14 days, Settings, Privatus Analytics shows administrators one note asking for a
+review on WordPress.org. It shows on no other admin page. "Don't show this again" (a nonce-checked `admin-post.php`
+action that needs `manage_options`) hides it for good. The state lives in the `privatus_analytics_review` option.
+
 ### Uninstall
 
-Deleting the plugin removes its options and all `_privatus_tracked` order meta (posts meta and HPOS
+Deleting the plugin removes its options (settings and the review note state) and all `_privatus_tracked` order meta (posts meta and HPOS
 `wc_orders_meta`, every site on multisite).
 
 ## License: GPL-2.0-or-later

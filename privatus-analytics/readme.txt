@@ -4,28 +4,46 @@ Tags: analytics, privacy, cookieless, gdpr, woocommerce
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Cookieless website analytics for WordPress and WooCommerce. No cookies, no personal data and no consent banner needed for analytics.
+Simple, private analytics. No cookies, no bots in your numbers, and a dashboard you understand in seconds.
 
 == Description ==
 
-Privatus Analytics counts visits, sources, pages and conversions without cookies, local storage or fingerprinting. This plugin adds the Privatus Analytics tracking script to your site and records WooCommerce purchases.
+**Website stats should be easy. Google Analytics is not.**
 
-The plugin does nothing until you enter your site id. You need a Privatus Analytics account to see reports. Sign up at [privatusanalytics.com](https://privatusanalytics.com).
+Google Analytics is slow and confusing. You click through menu after menu just to see how many people visited. It sends what your visitors do to Google. In many countries it means showing a cookie pop-up (the box that asks visitors to accept cookies), and many people click "reject", so you never see them at all. Bots then pad the numbers that are left.
 
-**Features**
+**Privatus Analytics is the simple, private way to see who visits your site.**
+
+It counts visits without cookies and never stores IP addresses. Bots are filtered out before they are counted. Your data is never sold or shared. You paste one code into this plugin and you are done.
+
+= What you get =
+
+* **A dashboard you understand in seconds.** Visitors, top pages, where people came from and which countries they are in, all on one screen. No training needed.
+* **No cookie pop-up needed for our analytics.** Privatus Analytics sets no cookies and stores no personal data, so there is nothing to ask visitors about. Laws differ by country, so check your own legal advice.
+* **Honest numbers.** Known bots, fake traffic and spam are left out on every plan, so you see real people. Pro adds a bot score for every visit to catch smarter bots.
+* **A fast site.** The tracking script is about 3 KB and loads without blocking your page.
+* **Sales you can see.** With WooCommerce, every order shows up as revenue, so you know which pages and sources bring in money. No names, emails or order numbers are ever sent.
+* **Data you own.** We never sell it and never show you ads. You can pull it out any time through the API.
+* **Your history, kept.** Moving from Google Analytics? You can import your old Google Analytics 4 data into Privatus Analytics.
+
+= Start free =
+
+The Free plan has 10,000 events a month and 3 sites, with no card. Every new account also gets 14 days of Pro free, with no card. [Create your account](https://privatusanalytics.com), copy your site id, and paste it into Settings, Privatus Analytics. You will see your first visitors within minutes.
+
+= What the plugin does =
 
 * One-field setup: paste your site id (it starts with pa_).
-* Every tracker option: single-page-app mode, manual pageviews, modules (engagement, automatic events, Web Vitals, click maps, surveys), allowed domains, excluded paths, path masks, extra query parameters, canonical URLs and hash routing.
-* Leave out logged-in users by role. Administrators are excluded by default.
-* WooCommerce purchase tracking with revenue, currency, number of items and whether a coupon was used. Order ids, names, emails and addresses are never sent, and order-specific URLs are masked.
-* A dashboard card with a button that opens your Privatus Analytics dashboard.
-* A `[privatus_optout]` shortcode that lets visitors opt out of being counted, or back in.
+* Leaves out your own visits. Administrators are left out by default, and you can pick other roles.
+* WooCommerce purchase tracking with the order total, currency, number of items and whether a coupon was used. Order page addresses are cleaned before they are sent, so order numbers never show up in your reports.
+* A `[privatus_optout]` shortcode that lets visitors choose not to be counted, or be counted again.
 * Suggested privacy policy text under Settings, Privacy.
-* No cookies are set and nothing is written to the visitor's device, except the optional opt-out flag a visitor chooses to set.
+* A dashboard card with a button that opens your Privatus Analytics dashboard.
+* Every tracker option for advanced sites: single-page-app mode, manual pageviews, extra modules (engagement, automatic events, page speed, click maps and surveys), allowed domains, excluded paths, path masks, extra query parameters, canonical URLs and hash routing.
+* Nothing is written to the visitor's device, except the optional opt-out choice a visitor makes.
 
 = External service =
 
@@ -53,21 +71,33 @@ This plugin relies on the Privatus Analytics service, operated by Two Phase LLC 
 
 == Frequently Asked Questions ==
 
-= Do I need a cookie banner? =
+= How is this different from Google Analytics? =
 
-Privatus Analytics stores nothing on the visitor's device and uses no cookies, so analytics does not need a banner by itself. Check with your own counsel for your country.
+Privatus Analytics shows the numbers most site owners need on one simple screen. It sets no cookies, never stores IP addresses, filters out bots and never sends your visitors' data to Google or to ad networks. Google Analytics is free because it uses your visitors' data. Privatus Analytics never sells it.
+
+= Do I need a cookie pop-up? =
+
+Privatus Analytics sets no cookies and stores nothing on the visitor's device, so our analytics does not need a pop-up by itself. Other tools on your site might. Laws differ by country, so check your own legal advice.
+
+= Is there a free plan? =
+
+Yes. The Free plan has 10,000 events a month and 3 sites, with no card. An event is a pageview or another action you track. Every new account also gets 14 days of Pro free, with no card.
 
 = Does the plugin work without a Privatus Analytics account? =
 
-No. The plugin only adds the tracking script. The reports live in your Privatus Analytics account.
+No. The plugin adds the tracking script. Your reports live in your Privatus Analytics account.
 
 = Where do I find my site id? =
 
 In your Privatus Analytics dashboard under Site settings, then Setup. It looks like pa_AbC123.
 
+= Will it slow down my site? =
+
+No. The script is about 3 KB and loads with `defer`, so it waits until your page is ready.
+
 = How are WooCommerce purchases tracked? =
 
-The plugin prints a small script on the order-received page that records one `purchase` event in the visitor's browser. It respects the visitor's opt-out. Order ids, names, emails and addresses are never sent.
+The plugin prints a small script on the order-received page that records one `purchase` event in the visitor's browser. It respects the visitor's opt-out. Order numbers, names, emails and addresses are never sent.
 
 = Will my own visits be counted? =
 
@@ -81,18 +111,32 @@ Exclude `pa.js` from the combine, defer and delay JavaScript features of your ca
 
 Yes. Use the `privatus_analytics_should_track` filter (a boolean) to skip tracking on a request. Use the `privatus_analytics_script_attributes` filter (an array) to change the script tag attributes.
 
+= How do I leave a review? =
+
+Thank you! Go to the [Privatus Analytics reviews page](https://wordpress.org/support/plugin/privatus-analytics/reviews/#new-post) on WordPress.org and click "Add your review". Kind words and honest feedback both help us make the plugin better.
+
+= Will the plugin ask me for a review? =
+
+Once. After 14 days, a short note on the Settings, Privatus Analytics page asks if you would like to leave a review. Only administrators see it, it never shows on other admin pages, and "Don't show this again" hides it for good.
+
 = What is removed when I delete the plugin? =
 
-Its settings and the per-order purchase marker. Your data in Privatus Analytics is not touched.
+Its settings, the review note setting and the per-order purchase marker. Your data in Privatus Analytics is not touched.
 
 == Screenshots ==
 
-1. The settings page with the site id and script options.
-2. Exclusions and WooCommerce settings.
-3. The dashboard card on the WordPress dashboard.
-4. The opt-out shortcode on a privacy page.
+1. Your Privatus Analytics dashboard: visitors, top pages and where they came from, all on one screen.
+2. See which countries your visitors are in, which devices they use and which campaigns bring them in.
+3. Setup takes one field. Paste your site id and save.
+4. Leave out your own visits and turn on WooCommerce sales tracking.
+5. A card on your WordPress dashboard opens your stats in one click.
+6. Let visitors choose not to be counted with the opt-out shortcode.
 
 == Changelog ==
+
+= 1.0.3 =
+* A clearer plugin description, with dashboard screenshots.
+* After 14 days, a single note on the settings page asks administrators for a review. "Don't show this again" hides it for good. Deleting the plugin removes its setting.
 
 = 1.0.2 =
 * The plugin home page link now goes to the WordPress install guide.
@@ -107,6 +151,9 @@ Its settings and the per-order purchase marker. Your data in Privatus Analytics 
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+A clearer description and dashboard screenshots. No change to tracking.
 
 = 1.0.2 =
 The tracking script now loads the standard WordPress way. Needs WordPress 6.4 or newer.

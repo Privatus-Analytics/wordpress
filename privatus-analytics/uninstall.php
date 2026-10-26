@@ -16,6 +16,7 @@ function privatus_analytics_uninstall_site() {
 	global $wpdb;
 
 	delete_option( 'privatus_analytics_settings' );
+	delete_option( 'privatus_analytics_review' );
 	// Left by plugin versions that had a secret key setting. No current version writes it.
 	delete_option( 'privatus_analytics_ingest_key' );
 

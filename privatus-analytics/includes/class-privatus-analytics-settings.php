@@ -272,6 +272,7 @@ final class Privatus_Analytics_Settings {
 			return;
 		}
 		echo '<div class="wrap"><h1>' . esc_html( get_admin_page_title() ) . '</h1>';
+		Privatus_Analytics_Review::render();
 		echo '<form action="' . esc_url( admin_url( 'options.php' ) ) . '" method="post">';
 		settings_fields( self::GROUP );
 		do_settings_sections( self::PAGE );
