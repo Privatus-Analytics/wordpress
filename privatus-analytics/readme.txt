@@ -4,7 +4,7 @@ Tags: analytics, privacy, cookieless, gdpr, woocommerce
 Requires at least: 6.4
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,7 @@ The Free plan has 10,000 events a month and 3 sites, with no card. Every new acc
 * One-field setup: paste your site id (it starts with pa_).
 * Leaves out your own visits. Administrators are left out by default, and you can pick other roles.
 * WooCommerce purchase tracking with the order total, currency, number of items and whether a coupon was used. Order page addresses are cleaned before they are sent, so order numbers never show up in your reports.
+* WS Form tracking: one `WS Form Submit` event each time a WS Form form is sent, with the form id and form name. Turn it into a goal to see which pages and sources bring in form sends. What the visitor typed is never sent.
 * A `[privatus_optout]` shortcode that lets visitors choose not to be counted, or be counted again.
 * Suggested privacy policy text under Settings, Privacy.
 * A dashboard card with a button that opens your Privatus Analytics dashboard.
@@ -51,7 +52,7 @@ This plugin relies on the Privatus Analytics service, operated by Two Phase LLC 
 
 **What it is used for:** counting visits and conversions on your site and showing them in your Privatus Analytics dashboard.
 
-**What is loaded and sent:** after you save a site id, every front-end page loads the script `https://privatusstats.com/js/pa.js` in the visitor's browser. That script sends the following to the endpoint `https://privatusstats.com/api/event` (it only accepts data sent by the script, so it shows an error if you open it in a browser): the page address (query parameters are removed except campaign parameters and any you allow), the referrer, the browser language, the screen width, the time zone name, and the names and properties of events (for WooCommerce, the order total, currency, item count and a coupon flag). Your site id is sent with each request. The visitor's IP address and browser details are used in memory only, together with a random value that changes every day, to count unique visits and spot bots. They are never stored. The visitor's country comes from the country code that Cloudflare adds to each request. Nothing is sent when the visitor has opted out, when the visitor is a logged-in user with an excluded role, or in the admin area.
+**What is loaded and sent:** after you save a site id, every front-end page loads the script `https://privatusstats.com/js/pa.js` in the visitor's browser. That script sends the following to the endpoint `https://privatusstats.com/api/event` (it only accepts data sent by the script, so it shows an error if you open it in a browser): the page address (query parameters are removed except campaign parameters and any you allow), the referrer, the browser language, the screen width, the time zone name, and the names and properties of events (for WooCommerce, the order total, currency, item count and a coupon flag, and for WS Form, the form id and form name). Your site id is sent with each request. The visitor's IP address and browser details are used in memory only, together with a random value that changes every day, to count unique visits and spot bots. They are never stored. The visitor's country comes from the country code that Cloudflare adds to each request. Nothing is sent when the visitor has opted out, when the visitor is a logged-in user with an excluded role, or in the admin area.
 
 **When:** only after you enter a site id in Settings, Privatus Analytics. If you change the script host setting, the same data goes to the host you enter.
 
@@ -99,6 +100,10 @@ No. The script is about 3 KB and loads with `defer`, so it waits until your page
 
 The plugin prints a small script on the order-received page that records one `purchase` event in the visitor's browser. It respects the visitor's opt-out. Order numbers, names, emails and addresses are never sent.
 
+= How are WS Form submissions tracked? =
+
+Turn on "Track form submissions" under Settings, Privatus Analytics, WS Form. The plugin then listens for the WS Form events that fire when a form is sent (wsf-submit-success, or wsf-submit-complete for forms that post the normal way). Each send records one `WS Form Submit` event in the visitor's browser, with the form id and form name. What the visitor typed is never sent. It respects the visitor's opt-out. In Privatus Analytics, make a goal from the event to see which pages and sources bring in form sends.
+
 = Will my own visits be counted? =
 
 Not if you are logged in with an excluded role. Administrators are excluded by default.
@@ -133,6 +138,9 @@ Its settings, the review note setting and the per-order purchase marker. Your da
 6. Let visitors choose not to be counted with the opt-out shortcode.
 
 == Changelog ==
+
+= 1.0.4 =
+* New: WS Form tracking. Turn it on under Settings, Privatus Analytics, WS Form, and each form send records a "WS Form Submit" event with the form id and form name.
 
 = 1.0.3 =
 * A clearer plugin description, with dashboard screenshots.

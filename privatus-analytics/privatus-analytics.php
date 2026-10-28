@@ -3,7 +3,7 @@
  * Plugin Name:       Privatus Analytics
  * Plugin URI:        https://privatusanalytics.com/docs/install/wordpress
  * Description:       Simple, private analytics for WordPress and WooCommerce. No cookies, honest numbers and a dashboard you understand in seconds.
- * Version:           1.0.3
+ * Version:           1.0.4
  * Requires at least: 6.4
  * Requires PHP:      7.4
  * Author:            Privatus Analytics
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'PRIVATUS_ANALYTICS_VERSION', '1.0.3' );
+define( 'PRIVATUS_ANALYTICS_VERSION', '1.0.4' );
 define( 'PRIVATUS_ANALYTICS_FILE', __FILE__ );
 define( 'PRIVATUS_ANALYTICS_DIR', plugin_dir_path( __FILE__ ) );
 define( 'PRIVATUS_ANALYTICS_URL', plugin_dir_url( __FILE__ ) );
@@ -30,6 +30,7 @@ define( 'PRIVATUS_ANALYTICS_URL', plugin_dir_url( __FILE__ ) );
 require_once PRIVATUS_ANALYTICS_DIR . 'includes/class-privatus-analytics-settings.php';
 require_once PRIVATUS_ANALYTICS_DIR . 'includes/class-privatus-analytics-tracker.php';
 require_once PRIVATUS_ANALYTICS_DIR . 'includes/class-privatus-analytics-woocommerce.php';
+require_once PRIVATUS_ANALYTICS_DIR . 'includes/class-privatus-analytics-ws-form.php';
 require_once PRIVATUS_ANALYTICS_DIR . 'includes/class-privatus-analytics-dashboard-widget.php';
 require_once PRIVATUS_ANALYTICS_DIR . 'includes/class-privatus-analytics-optout.php';
 require_once PRIVATUS_ANALYTICS_DIR . 'includes/class-privatus-analytics-privacy.php';
@@ -42,6 +43,7 @@ function privatus_analytics_init() {
 	( new Privatus_Analytics_Settings() )->register();
 	( new Privatus_Analytics_Tracker() )->register();
 	( new Privatus_Analytics_WooCommerce() )->register();
+	( new Privatus_Analytics_WS_Form() )->register();
 	( new Privatus_Analytics_Dashboard_Widget() )->register();
 	( new Privatus_Analytics_Optout() )->register();
 	( new Privatus_Analytics_Privacy() )->register();

@@ -49,3 +49,11 @@ jobs:
       - uses: actions/checkout@v7
       - name: Build the WordPress.org zip
         run: ./build-zip.sh
+
+  ws-form:
+    # WordPress + WS Form LITE in Docker. A headless browser sends a form and the event is checked.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: WS Form tracking end to end
+        run: ./tests/ws-form/verify-docker.sh

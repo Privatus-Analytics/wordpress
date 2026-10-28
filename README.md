@@ -30,6 +30,7 @@ What you get:
 - One-field setup: paste your site id and the tracker is added to every front-end page.
 - Leaves out logged-in users by role (administrators by default).
 - Tracks WooCommerce purchases from the visitor's browser, with no personal data.
+- Tracks WS Form submissions as a `WS Form Submit` event, ready to use as a goal.
 - An opt-out shortcode, suggested privacy policy text and a dashboard card.
 - Needs PHP 7.4 or newer and WordPress 6.4 or newer. The plugin lives in [`privatus-analytics/`](privatus-analytics/).
 
@@ -55,6 +56,7 @@ Until then it is installed from a zip. The `Update URI` header was removed becau
 | SPA mode, manual, modules (engage/auto/vitals/clicks), allowed domains, excluded paths, path masks, extra params, canonical, hash | Map 1:1 to the tracker's `data-*` attributes. |
 | Do not track roles | Logged-in users with any selected role get no snippet (administrators by default). |
 | WooCommerce: track purchases | Sends a `purchase` event from the browser on the thank-you page. |
+| WS Form: track form submissions | Sends a `WS Form Submit` event from the browser each time a WS Form form is sent. Off by default. |
 | Dashboard link + capability | Optional `https://` link. The WordPress dashboard shows a small card with a button that opens it in a new tab (no iframe, no request to our servers), for users with the chosen capability. |
 
 The snippet is skipped in wp-admin, previews, the Customizer, AJAX, feeds and robots.txt. It is printed with
@@ -70,6 +72,18 @@ masked automatically (`/checkout/order-received/*->/checkout/order-received/`) s
 
 The plugin prints `privatus.track('purchase', {...})` using the queue stub, so the event is sent from the visitor's
 browser by the tracker. It respects the visitor opt-out, excluded roles and ad-blocker choices.
+
+### WS Form
+
+When "Track form submissions" is on and WS Form (LITE or PRO) is active, a small inline script is printed after
+jQuery. It listens for WS Form's own JavaScript events: `wsf-submit-success` (an AJAX submit worked) and
+`wsf-submit-complete` (a form that posts the normal way). Only one of them fires per submit. Each one queues
+`privatus.track('WS Form Submit', { form_id, form })`, where `form` is the form name. **What the visitor typed is
+never sent.** In Privatus Analytics, make a goal from the `WS Form Submit` event, and filter it by `form` to get
+one goal per form.
+
+`./tests/ws-form/verify-docker.sh` checks this end to end: WordPress and WS Form LITE in Docker, a headless browser
+fills in and sends the "Contact Us" form, and the queued event is checked.
 
 ### Opt-out shortcode
 
@@ -101,6 +115,9 @@ See `privatus-analytics/LICENSE` and `privatus-analytics/LICENSE-GPL-2.0.txt`.
 ## Development checks
 
 ```sh
+# WS Form tracking, end to end (WordPress + WS Form LITE + headless Chromium in Docker)
+./tests/ws-form/verify-docker.sh
+
 # PHP syntax (PHP 8.3)
 docker run --rm -v "$PWD":/w -w /w php:8.3-cli sh -c 'for f in $(find . -name "*.php"); do php -l $f || exit 1; done'
 

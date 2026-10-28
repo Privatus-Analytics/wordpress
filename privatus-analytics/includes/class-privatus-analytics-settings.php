@@ -29,21 +29,22 @@ final class Privatus_Analytics_Settings {
 	 */
 	public static function defaults() {
 		return array(
-			'site_id'       => '',
-			'script_host'   => self::DEFAULT_HOST,
-			'spa'           => 'auto',
-			'manual'        => false,
-			'modules'       => array( 'engage' ),
-			'domains'       => '',
-			'paths_skip'    => '',
-			'mask'          => '',
-			'params'        => '',
-			'canonical'     => false,
-			'hash'          => false,
-			'exclude_roles' => array( 'administrator' ),
-			'woo_enabled'   => false,
-			'dashboard_url' => '',
-			'dashboard_cap' => 'manage_options',
+			'site_id'        => '',
+			'script_host'    => self::DEFAULT_HOST,
+			'spa'            => 'auto',
+			'manual'         => false,
+			'modules'        => array( 'engage' ),
+			'domains'        => '',
+			'paths_skip'     => '',
+			'mask'           => '',
+			'params'         => '',
+			'canonical'      => false,
+			'hash'           => false,
+			'exclude_roles'  => array( 'administrator' ),
+			'woo_enabled'    => false,
+			'wsform_enabled' => false,
+			'dashboard_url'  => '',
+			'dashboard_cap'  => 'manage_options',
 		);
 	}
 
@@ -125,6 +126,7 @@ final class Privatus_Analytics_Settings {
 		add_settings_section( 'privatus_script', __( 'Script options', 'privatus-analytics' ), '__return_false', self::PAGE );
 		add_settings_section( 'privatus_exclusions', __( 'Exclusions', 'privatus-analytics' ), '__return_false', self::PAGE );
 		add_settings_section( 'privatus_woo', __( 'WooCommerce', 'privatus-analytics' ), array( $this, 'section_woo' ), self::PAGE );
+		add_settings_section( 'privatus_wsform', __( 'WS Form', 'privatus-analytics' ), array( $this, 'section_wsform' ), self::PAGE );
 		add_settings_section( 'privatus_dashboard', __( 'Dashboard card', 'privatus-analytics' ), '__return_false', self::PAGE );
 
 		$fields = array(
@@ -141,6 +143,7 @@ final class Privatus_Analytics_Settings {
 			array( 'mask', __( 'Path masks', 'privatus-analytics' ), 'privatus_exclusions', 'text', __( 'Comma-separated glob->replacement rules. WooCommerce order paths are masked automatically.', 'privatus-analytics' ), '/u/*->/u/:id' ),
 			array( 'exclude_roles', __( 'Do not track logged-in users with role', 'privatus-analytics' ), 'privatus_exclusions', 'roles', __( 'Hold Ctrl/Cmd to select several roles.', 'privatus-analytics' ) ),
 			array( 'woo_enabled', __( 'Track purchases', 'privatus-analytics' ), 'privatus_woo', 'checkbox', __( 'Record a purchase event (revenue, currency, item count, coupon used) in the visitor\'s browser on the thank-you page. It respects the visitor opt-out.', 'privatus-analytics' ) ),
+			array( 'wsform_enabled', __( 'Track form submissions', 'privatus-analytics' ), 'privatus_wsform', 'checkbox', __( 'Record a "WS Form Submit" event in the visitor\'s browser each time a WS Form form is sent. Only the form id and form name are sent, never what the visitor typed. It respects the visitor opt-out.', 'privatus-analytics' ) ),
 			array( 'dashboard_url', __( 'Dashboard link', 'privatus-analytics' ), 'privatus_dashboard', 'url', __( 'An https:// link to your Privatus Analytics dashboard or a shared dashboard link. The WordPress dashboard shows a card with a button that opens it.', 'privatus-analytics' ), 'https://privatusanalytics.com/' ),
 			array( 'dashboard_cap', __( 'Card visible to', 'privatus-analytics' ), 'privatus_dashboard', 'select', __( 'Users need this capability to see the card.', 'privatus-analytics' ), array_combine( self::CAPABILITIES, self::CAPABILITIES ) ),
 		);
@@ -186,6 +189,16 @@ final class Privatus_Analytics_Settings {
 			echo '<p>' . esc_html__( 'WooCommerce is not active. These settings take effect once it is.', 'privatus-analytics' ) . '</p>';
 		}
 		echo '<p>' . esc_html__( 'No order ids, emails, names or addresses are ever sent.', 'privatus-analytics' ) . '</p>';
+	}
+
+	/**
+	 * Intro text for the WS Form section.
+	 */
+	public function section_wsform() {
+		if ( ! Privatus_Analytics_WS_Form::is_active() ) {
+			echo '<p>' . esc_html__( 'WS Form is not active. This setting takes effect once it is.', 'privatus-analytics' ) . '</p>';
+		}
+		echo '<p>' . esc_html__( 'Make a goal from the "WS Form Submit" event in Privatus Analytics to see which pages and sources bring in form sends.', 'privatus-analytics' ) . '</p>';
 	}
 
 	/**
@@ -325,7 +338,7 @@ final class Privatus_Analytics_Settings {
 
 		$out['spa'] = isset( $input['spa'] ) && in_array( $input['spa'], self::SPA_MODES, true ) ? $input['spa'] : 'auto';
 
-		foreach ( array( 'manual', 'canonical', 'hash', 'woo_enabled' ) as $flag ) {
+		foreach ( array( 'manual', 'canonical', 'hash', 'woo_enabled', 'wsform_enabled' ) as $flag ) {
 			$out[ $flag ] = ! empty( $input[ $flag ] );
 		}
 
